@@ -1,0 +1,34 @@
+# Vagrantfile
+Vagrant.configure("2") do |config|
+  # Usar la box debian/bullseye64
+  config.vm.box = "debian/bullseye64"
+
+  # Configuración del hostname
+  config.vm.hostname = "matega.fjeclot.net" # Reemplaza 'xxyyzz' por las iniciales de tu nombre, primer apellido y segundo apellido
+
+  # Configuración del nombre de la máquina en VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "pj9f4a7.2_matega" # Reemplaza 'xxyyzz' por las iniciales de tu nombre, primer apellido y segundo apellido
+    vb.cpus = 2
+    vb.memory = 2048
+  end
+
+  # Configuración de la carpeta sincronizada
+  config.vm.synced_folder "codi", "/var/www/html"
+
+  # Configuración de la red con adaptador puente y DHCP
+  config.vm.network "public_network", type: "dhcp"
+
+  # Configuración del reenvío de puertos
+  config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 443, host: 8443
+
+  # Script de provisión para configurar la máquina virtual
+  config.vm.provision "shell", inline: <<-SHELL
+    # Actualizar el listado de paquetes
+    apt-get update
+
+    # Instalar los paquetes requeridos
+    apt-get install -y aptitude net-tools apache2 apache2-doc libapache2-mod-php php7.4 mariadb-server mariadb-client php7.4-mysql composer
+  SHELL
+end

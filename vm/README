@@ -1,0 +1,33 @@
+# Configuración del entorno con Vagrant
+
+Este proyecto configura una máquina virtual con Vagrant utilizando Debian Bullseye (versión 11). La máquina virtual estará configurada con un servidor web Apache y otros paquetes necesarios para el desarrollo web. A continuación, se detallan los pasos para la instalación y configuración.
+
+## Requisitos previos
+
+Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina física:
+
+- [VirtualBox](https://www.virtualbox.org/)
+- [Vagrant](https://www.vagrantup.com/)
+
+## Características del Vagrantfile
+
+El archivo `Vagrantfile` tiene las siguientes configuraciones:
+
+- **Box**: Utiliza la imagen `debian/bullseye64` (Debian 11).
+- **Hostname**: El nombre del host será `matega.fjeclot.net`, donde `xxyyzz` son las dos primeras letras de tu nombre, primer apellido y segundo apellido.
+- **Nombre de la máquina en VirtualBox**: La máquina se llamará `pj9f4a7.2_matega`, donde `xxyyzz` son las iniciales mencionadas anteriormente.
+- **Recursos asignados**: La máquina virtual usará 2 CPUs y 2048 MiB de memoria.
+- **Carpeta sincronizada**: La carpeta `codi` en la máquina física se sincronizará con `/var/www/html` en la máquina virtual.
+- **Red**: Se configurará una interfaz de red en modo puente con IP asignada por DHCP.
+- **Puertos**: 
+  - El puerto 80 de la máquina virtual se reenviará al puerto 8000 en la máquina física.
+  - El puerto 443 de la máquina virtual se reenviará al puerto 8443 en la máquina física.
+- **Provisión**: Se actualiza la lista de paquetes y se instalan los siguientes paquetes:
+  - `aptitude`, `net-tools`, `apache2`, `apache2-doc`, `libapache2-mod-php`, `php7.4`, `mariadb-server`, `mariadb-client`, `php7.4-mysql`, `composer`.
+
+## Instrucciones de uso
+
+1. **Clonar el repositorio** (o copiar el `Vagrantfile` y crear la carpeta `codi`):
+   ```bash
+   git clone <url_del_repositorio>
+   cd <nombre_del_directorio>
